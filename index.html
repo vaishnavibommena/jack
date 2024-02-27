@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LOVE ❤</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Short+Stack&amp;family=Homemade+Apple&amp;display=swap'>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.9.2"></script>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: 1000px;
+            background-image: url("https://www.psdgraphics.com/wp-content/uploads/2022/01/white-math-paper-texture.jpg");
+            background-position: center center;
+            margin: 0;
+        }
+
+        .paper {
+            background-image: url("https://i0.wp.com/textures.world/wp-content/uploads/2018/10/2-Millimeter-Paper-Background-copy.jpg?ssl=1");
+            background-size: 500px;
+            background-position: center center;
+            padding: 20px 100px;
+            transform: rotateZ(-5deg);
+            box-shadow: 1px 15px 20px 0px rgba(0, 0, 0, 0.5);
+            position: absolute;
+        }
+
+        .paper.heart {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .paper.image {
+            padding: 10px;
+        }
+
+        .paper.image p {
+            font-size: 30px;
+        }
+
+        img {
+            max-height: 200px;
+            width: 100%;
+            user-select: none;
+        }
+
+        .paper.heart::after {
+            content: "";
+            background-image: url('https://cdn.pixabay.com/photo/2016/03/31/19/25/cartoon-1294994__340.png');
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: 150px;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+        }
+
+        p {
+            font-family: 'Zeyada';
+            font-size: 50px;
+            color: rgb(0, 0, 100);
+            opacity: 0.75;
+            user-select: none;
+        }
+
+        .love-animation-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.8;
+            animation: loveBalloons 10s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes loveBalloons {
+            0% {
+                transform: translateY(100vh) rotateZ(0deg);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0) rotateZ(360deg);
+                opacity: 1;
+            }
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .paper.fadeIn {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .paper.rotate {
+            animation: rotate 1s linear;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="paper heart"></div>
+    <div class="paper image">
+        <p> and I fallen in</p>
+        <p>Love with You 😍 </p>
+        <img src="./04.jpg" />
+    </div>
+    <div class="paper image">
+        <p> Be my FLM </p>
+        <p>&#129303;</p>
+        <img src="./05.jpg" />
+    </div>
+    <div class="paper image">
+        <p> U came as an &#x1f319;</p>
+        <p>for this night wolf...</p>
+        <p>&#128058;</p>
+        <img src="./06.jpg" />
+    </div>
+    <div class="paper image">
+        <p> u made life &#9774;</p>
+        <p>hopeless to hopeful</p>
+        <p>and gave a purpose</p>
+        <img src="./03.jpg" />
+    </div>
+
+    <div class="paper image">
+        <p>U are the one </p>
+        <p> shown me all </p>
+        <p>feelings &#129392;</p>
+        <img src="./02.jpg" height="200px" />
+    </div>
+    <div class="paper image">
+        <p>How can be </p>
+        <p> someone so cute ❤ </p>
+        <img src="./01.jpg" />
+    </div>
+    <div class="paper red">
+        <p class="p1"> and My Favorite</p>
+        <p class="p2">Person 😍</p>
+    </div>
+    <div class="paper">
+        <p class="p1">You are Cute, </p>
+        <p class="p1">Amazing my angry Chubbs...&#128520; <span style="color: red !important;">❤</span></p>
+    </div>
+    <div class="paper">
+        <p class="p1">Drag the papers to move!</p>
+    </div>
+    <div class="love-animation-container"></div>
+
+    <script>
+        let highestZ = 1;
+
+        function initPaper(paper) {
+            let holdingPaper = false;
+            let mouseX = 0, mouseY = 0;
+            let prevMouseX = 0, prevMouseY = 0;
+            let velX = 0, velY = 0;
+            let rotation = Math.random() * 30 - 15;
+            let currentPaperX = 0, currentPaperY = 0;
+            let rotating = false;
+
+            function updatePaperTransform() {
+                if (holdingPaper) {
+                    if (!rotating) {
+                        currentPaperX += velX;
+                        currentPaperY += velY;
+                    }
+
+                    prevMouseX = mouseX;
+                    prevMouseY = mouseY;
+
+                    paper.style.transform = translateX(${currentPaperX}px) translateY(${currentPaperY}px) rotateZ(${rotation}deg);
+                }
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                if (!rotating) {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                    velX = mouseX - prevMouseX;
+                    velY = mouseY - prevMouseY;
+                }
+
+                const dirX = e.clientX - mouseX;
+                const dirY = e.clientY - mouseY;
+                const angle = (Math.atan2(dirY, dirX) * 180) / Math.PI;
+                rotation = (360 + Math.round(angle)) % 360;
+
+                updatePaperTransform();
+            });
+
+            paper.addEventListener('mousedown', (e) => {
+                if (holdingPaper) return;
+
+                holdingPaper = true;
+                paper.style.zIndex = highestZ++;
+
+                if (e.button === 0) {
+                    prevMouseX = mouseX;
+                    prevMouseY = mouseY;
+                } else if (e.button === 2) {
+                    rotating = true;
+                }
+            });
+
+            paper.addEventListener('mouseup', () => {
+                if (holdingPaper) {
+                    holdingPaper = false;
+                    rotating = false;
+
+                    if (paper.classList.contains('last-paper')) {
+                        // Add love animation logic here
+                        createLoveAnimation();
+                    }
+                }
+            });
+        }
+
+        function createLoveAnimation() {
+            const loveContainer = document.querySelector('.love-animation-container');
+
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤';
+                heart.className = 'heart';
+                heart.style.left = ${Math.random() * window.innerWidth}px;
+                heart.style.top = ${Math.random() * window.innerHeight}px;
+                loveContainer.appendChild(heart);
+
+                gsap.to(heart, {
+                    y: -window.innerHeight,
+                    ease: "power2.in",
+                    onComplete: () => {
+                        heart.remove();
+                    }
+                });
+            }
+        }
+
+        const papers = document.querySelectorAll('.paper');
+        papers.forEach((paper, index) => {
+            initPaper(paper);
+
+            // Add class 'last-paper' to the last paper
+            if (index === papers.length - 1) {
+                paper.classList.add('last-paper');
+            }
+        });
+    </script>
+</body>
+
+</html>
